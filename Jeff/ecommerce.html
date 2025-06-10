@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naturel by Sophie - Produits Bio</title>
+    <style>
+        /* Reset et Polices */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f7;
+            color: #333;
+        }
+        
+        /* Header */
+        header {
+            background-color: #4a8f29;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bio.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .btn {
+            background-color: #4a8f29;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a7320;
+        }
+        
+        /* Produits */
+        .products {
+            padding: 3rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #4a8f29;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-info h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .product-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #4a8f29;
+            font-size: 1.2rem;
+        }
+        
+        .add-to-cart {
+            background-color: #4a8f29;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Panier */
+        .cart-icon {
+            position: relative;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-cart {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .cart-item-price {
+            color: #4a8f29;
+            font-weight: bold;
+        }
+        
+        .cart-item-remove {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .cart-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            text-align: right;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .cart-modal {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <!-- Remplacez par votre logo -->
+            <img src="logo.png" alt="Naturel by Sophie">
+            <h1>Naturel by Sophie</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#products">Produits</a></li>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li>
+                    <div class="cart-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Découvrez des produits naturels et bio</h2>
+        <p>Des soins 100% naturels pour votre peau et votre bien-être, fabriqués avec amour et des ingrédients de qualité.</p>
+        <a href="#products" class="btn">Voir nos produits</a>
+    </section>
+
+    <!-- Produits -->
+    <section class="products" id="products">
+        <h2 class="section-title">Nos Produits Phares</h2>
+        <div class="product-grid">
+            <!-- Produit 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="lavande.jpg" alt="Huile Essentielle de Lavande">
+                </div>
+                <div class="product-info">
+                    <h3>Huile Essentielle de Lavande</h3>
+                    <p>Apaisante et relaxante, idéale pour les massages et la diffusion.</p>
+                    <div class="product-price">
+                        <span class="price">9.500 fr</span>
+                        <button class="add-to-cart" data-id="1" data-name="Huile Essentielle de Lavande" data-price="12.90" data-image="produit1.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Produit 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="karite.jpeg" alt="Beurre de Karité Pur">
+                </div>
+                <div class="product-info">
+                    <h3>Beurre de Karité Pur</h3>
+                    <p>Nourrit et protège la peau contre les agressions extérieures.</p>
+                    <div class="product-price">
+                        <span class="price">10.050 fr</span>
+                        <button class="add-to-cart" data-id="2" data-name="Beurre de Karité Pur" data-price="15.50" data-image="produit2.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Produit 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="savon.jpeg" alt="Savon Artisanal à l'Argile">
+                </div>
+                <div class="product-info">
+                    <h3>Savon Artisanal à l'Argile</h3>
+                    <p>Purifiant et doux, adapté à tous les types de peau.</p>
+                    <div class="product-price">
+                        <span class="price">5.000 fr</span>
+                        <button class="add-to-cart" data-id="3" data-name="Savon Artisanal à l'Argile" data-price="7.90" data-image="produit3.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Produit 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="baume.webp" alt="Baume à Lèvres Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Baume à Lèvres Bio</h3>
+                    <p>Hydratant et réparateur à base de cire d'abeille et d'huiles végétales.</p>
+                    <div class="product-price">
+                        <span class="price">4.300 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="cheveux2.jpeg" alt="Produits cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Produits cheveux Bio</h3>
+                    <p>Hydratant et réparateur à base d'huiles végétales.</p>
+                    <div class="product-price">
+                        <span class="price">2.700 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="cheveux1.jpg" alt="Produit cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Produits cheveux Bio</h3>
+                    <p>Hydratant et réparateur à base de cire d'abeille.</p>
+                    <div class="product-price">
+                        <span class="price">3.000 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="4.jpg" alt="Produit cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Produits cheveux Bio</h3>
+                    <p>Huile de soin de cheveux.</p>
+                    <div class="product-price">
+                        <span class="price">6.500 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="2.jpg" alt="Produit cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Shampooing Bar</h3>
+                    <p>Ingrédient d'origine naturelle.</p>
+                    <div class="product-price">
+                        <span class="price">4.000 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 9 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="1.jpg" alt="Produit cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Deep conditioner</h3>
+                    <p>Paumade pour cheuveux douceur & brillant.</p>
+                    <div class="product-price">
+                        <span class="price">3.000 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produit 10 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="creme.jpg" alt="Crème cheveux Bio">
+                </div>
+                <div class="product-info">
+                    <h3>Crème cheveux Bio</h3>
+                    <p>Souplesse et élasticité.</p>
+                    <div class="product-price">
+                        <span class="price">3.000 fr</span>
+                        <button class="add-to-cart" data-id="4" data-name="Baume à Lèvres Bio" data-price="5.90" data-image="produit4.jpg">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Panier -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Votre Panier</h3>
+            <span class="close-cart">&times;</span>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Les articles du panier seront ajoutés ici dynamiquement -->
+        </div>
+        <div class="cart-total">
+            Total: <span id="cart-total">0,00</span> €
+        </div>
+        <button class="btn checkout-btn">Passer la commande</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Naturel by Sophie</h3>
+                <p>Des produits naturels et bio pour prendre soin de vous et de la planète.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Liens Utiles</h3>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#products">Produits</a></li>
+                    <li><a href="#about">À propos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <ul>
+                    <li>Email: naturelbysophie@gmail.com</li>
+                    <li>Téléphone: +237 6 96 31 30 90</li>
+                    <li>Adresse: yassa, Douala</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Naturel by Sophie. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        // Gestion du panier
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartIcon = document.getElementById('cart-icon');
+            const cartModal = document.getElementById('cart-modal');
+            const closeCart = document.querySelector('.close-cart');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.querySelector('.cart-count');
+            
+            let cart = [];
+            
+            // Ouvrir/fermer le panier
+            cartIcon.addEventListener('click', () => {
+                cartModal.style.display = 'block';
+            });
+            
+            closeCart.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+            
+            // Ajouter au panier
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    const name = button.getAttribute('data-name');
+                    const price = parseFloat(button.getAttribute('data-price'));
+                    const image = button.getAttribute('data-image');
+                    
+                    // Vérifier si l'article est déjà dans le panier
+                    const existingItem = cart.find(item => item.id === id);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({
+                            id,
+                            name,
+                            price,
+                            image,
+                            quantity: 1
+                        });
+                    }
+                    
+                    updateCart();
+                });
+            });
+            
+            // Mettre à jour le panier
+            function updateCart() {
+                renderCartItems();
+                updateCartTotal();
+                updateCartCount();
+            }
+            
+            // Afficher les articles du panier
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p>Votre panier est vide</p>';
+                    return;
+                }
+                
+                cart.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.classList.add('cart-item');
+                    cartItemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-price">${item.price.toFixed(2)} € x ${item.quantity}</div>
+                            <div class="cart-item-remove" data-id="${item.id}">Supprimer</div>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+                
+                // Gérer la suppression d'articles
+                document.querySelectorAll('.cart-item-remove').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const id = button.getAttribute('data-id');
+                        cart = cart.filter(item => item.id !== id);
+                        updateCart();
+                    });
+                });
+            }
+            
+            // Calculer le total
+            function updateCartTotal() {
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartTotal.textContent = total.toFixed(2);
+            }
+            
+            // Mettre à jour le compteur
+            function updateCartCount() {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = count;
+            }
+            
+            // Bouton de commande
+            document.querySelector('.checkout-btn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Votre panier est vide');
+                } else {
+                    alert(`Commande passée pour ${cart.reduce((sum, item) => sum + item.quantity, 0)} articles. Total: ${cartTotal.textContent} €`);
+                    cart = [];
+                    updateCart();
+                    cartModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
